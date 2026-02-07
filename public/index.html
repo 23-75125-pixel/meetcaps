@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capstone-Meeting</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📹</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <!-- Join Screen -->
+        <div class="join-screen" id="joinScreen">
+            <div class="join-container">
+                <div class="logo">
+                    <i class="fas fa-video"></i>
+                    <h1>Meet Ng Malalakas Para sa Capstone</h1>
+                </div>
+                
+                <p class="tagline">Para sa Capstone lang ang purpose nito</p>
+                
+                <div class="input-group">
+                    <label for="userName">
+                        <i class="fas fa-user"></i> Your Name
+                    </label>
+                    <input 
+                        type="text" 
+                        id="userName" 
+                        class="meet-input" 
+                        placeholder="Enter your name"
+                        value="Guest"
+                    >
+                </div>
+                
+                <div class="input-group">
+                    <label for="roomId">
+                        <i class="fas fa-link"></i> Meeting Code
+                    </label>
+                    <input 
+                        type="text" 
+                        id="roomId" 
+                        class="meet-input" 
+                        placeholder="Enter meeting code or create new"
+                    >
+                    <div class="room-actions">
+                        <button class="btn-icon" id="pasteBtn" title="Paste from clipboard">
+                            <i class="fas fa-paste"></i>
+                        </button>
+                        <button class="btn-icon" id="generateBtn" title="Generate random code">
+                            <i class="fas fa-random"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" id="joinButton">
+                        <i class="fas fa-video"></i> Join kana
+                    </button>
+                    <button class="btn btn-secondary" id="newMeetingButton">
+                        <i class="fas fa-plus"></i> Create New Meeting
+                    </button>
+                </div>
+                
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Secure & Encrypted</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-users"></i>
+                        <span>Up to 50 participants</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-comments"></i>
+                        <span>Real-time chat</span>
+                    </div>
+                </div>
+                
+                <!-- share-info moved below so it's available during meetings -->
+            </div>
+        </div>
+
+        <!-- Share link (available while in meeting) -->
+        <div class="share-info hidden" id="shareInfo">
+            <p>Share this link to invite others:</p>
+            <div class="share-link">
+                <input type="text" id="shareLink" readonly>
+                <button class="btn-icon" id="copyLinkBtn" title="Copy link">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Meeting Room -->
+        <div class="meeting-room hidden" id="meetingRoom">
+            <!-- Header -->
+            <header class="header">
+                <div class="logo">
+                    <i class="fas fa-video"></i>
+                    <h1>Meet ng Malalakas Para sa Capstone</h1>
+                </div>
+                
+                <div class="meet-info">
+                    <div class="meet-code" id="currentRoomId">Loading...</div>
+                    <div class="meet-time">
+                        <i class="fas fa-clock"></i>
+                        <span id="meetingTime">00:00:00</span>
+                        <span class="participant-count">
+                            <i class="fas fa-user"></i>
+                            <span id="participantCount">1</span>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="header-controls">
+                    <button class="icon-btn" id="toggleParticipants" title="Participants">
+                        <i class="fas fa-users"></i>
+                    </button>
+                    <button class="icon-btn" id="toggleChat" title="Chat">
+                        <i class="fas fa-comment-alt"></i>
+                    </button>
+                    <button class="icon-btn" id="shareMeetingBtn" title="Share meeting">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Video Grid -->
+                <div class="video-container">
+                    <div class="video-grid" id="videoGrid">
+                        <!-- Local video will be added here -->
+                    </div>
+                    
+                    <div class="empty-state" id="emptyState">
+                        <div class="empty-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h3>Waiting for others to join</h3>
+                        <p>Share the meeting link with others to start the conference</p>
+                        <button class="btn btn-outline" id="shareLinkInMeeting">
+                            <i class="fas fa-share-alt"></i> Share Meeting Link
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="sidebar collapsed" id="sidebar">
+                    <div class="sidebar-header">
+                        <h2 id="sidebarTitle">Participants</h2>
+                        <button class="icon-btn" id="closeSidebar">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="sidebar-content" id="sidebarContent">
+                        <!-- Participants or chat will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls">
+                <button class="control-btn mic-btn active" id="micButton" title="Mute/Unmute">
+                    <div class="control-icon">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <span>Mute</span>
+                </button>
+                
+                <button class="control-btn camera-btn active" id="cameraButton" title="Start/Stop Video">
+                    <div class="control-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <span>Stop Video</span>
+                </button>
+                
+                <button class="control-btn" id="screenShareButton" title="Share Screen">
+                    <div class="control-icon">
+                        <i class="fas fa-desktop"></i>
+                    </div>
+                    <span>Share Screen</span>
+                </button>
+                
+                <button class="control-btn" id="recordButton" title="Record Meeting">
+                    <div class="control-icon">
+                        <i class="fas fa-circle"></i>
+                    </div>
+                    <span>Record</span>
+                </button>
+                
+                <button class="control-btn leave-btn" id="leaveButton" title="Leave Meeting">
+                    <div class="control-icon">
+                        <i class="fas fa-phone-slash"></i>
+                    </div>
+                    <span>Leave</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+
+    <!-- Scripts -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
