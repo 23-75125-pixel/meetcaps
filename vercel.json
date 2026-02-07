@@ -1,0 +1,11 @@
+{
+  "buildCommand": "echo 'Vercel build for frontend only'",
+  "framework": "static",
+  "public": "public",
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}

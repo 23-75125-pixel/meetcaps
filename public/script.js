@@ -61,7 +61,20 @@ const configuration = {
 // Initialize the application
 function initApp() {
     // Connect to Socket.io server
-    socket = io();
+    const serverUrl = window.CONFIG?.SERVER_URL || 'http://localhost:3001';
+    console.log('Connecting to server:', serverUrl);
+    
+    socket = io(serverUrl, {
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        reconnectionAttempts: 5
+    });
+    
+    socket.on('connect_error', (error) => {
+        console.error('Connection error:', error);
+        showNotification('Connection Error', 'Failed to connect to server. Make sure the backend is running at: ' + serverUrl);
+    });
     
     // Set up event listeners
     setupEventListeners();

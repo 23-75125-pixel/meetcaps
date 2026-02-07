@@ -2,16 +2,25 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
-const path = require('path'); // Add this line
+const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 const server = http.createServer(app);
+
+// Get port from environment or use default
+const PORT = process.env.PORT || 3001;
+
+// Socket.io configuration with production-ready CORS
 const io = socketIo(server, {
   cors: {
-    origin: "*",
-    methods: ["GET", "POST"]
-  }
+    origin: process.env.ALLOWED_ORIGINS?.split(',') || "*",
+    methods: ["GET", "POST"],
+    credentials: false
+  },
+  // Reduce reconnection timeout for more responsive connections
+  pingInterval: 25000,
+  pingTimeout: 5000
 });
 
 // Middleware
@@ -201,9 +210,8 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
   console.log(`🌐 Open: http://localhost:${PORT}`);
-  console.log(`📱 Share this link to invite others!`);
+  console.log(`📱 Video conferencing server is ready!`);
 });
